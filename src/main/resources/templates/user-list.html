@@ -11,7 +11,10 @@
 		<!-- Bootstrap core CSS -->
 		<link th:href="@{/asserts/css/bootstrap.min.css}" rel="stylesheet">
 		<link th:href="@{/asserts/css/bootstrap.css}" rel="stylesheet">
-
+        <script type="text/javascript" th:src="@{/asserts/js/jquery-3.2.1.slim.min.js}" ></script>
+        <script type="text/javascript" th:src="@{/asserts/js/popper.min.js}" ></script>
+        <script type="text/javascript" th:src="@{/asserts/js/bootstrap.min.js}" ></script>
+        <script type="text/javascript" th:src="@{/asserts/js/bootstrap.js}" ></script>
 		<!-- Custom styles for this template -->
 		<link th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
 		<style type="text/css">
@@ -207,7 +210,7 @@
 					<nav aria-label="Page navigation">
 						<ul class="pagination">
 							<li class="active"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-							<li class="active" th:each="page : ${#numbers.sequence(1,${pages})}"><a href="/user/getUsers?currentPage=${page}" th:text="page"><span class="sr-only">(current)</span></a></li>
+							<li th:each="page : ${#numbers.sequence(1,pages)}"><a th:href="@{/user/getUsers?currentPage=}+${page}" th:text="${page}"><span class="sr-only">(current)</span></a></li>
 
 							<li class="active"><a href="#" aria-label="Previous"><span aria-hidden="true">&raquo;</span></a></li>
 
@@ -218,14 +221,13 @@
 			</div>
 		</div>
 	<script>
-		$('pagination').each(x=>{console.log(x)})
+
+		$('.pagination')[0].each(x=>{x.href="/user/getUsers?currenPage="+x.text()})
 	</script>
 		<!-- Bootstrap core JavaScript
     ================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script type="text/javascript" th:src="@{/asserts/js/jquery-3.2.1.slim.min.js}" ></script>
-		<script type="text/javascript" th:src="@{/asserts/js/popper.min.js}" ></script>
-		<script type="text/javascript" th:src="@{/asserts/js/bootstrap.min.js}" ></script>
+
 
 		<!-- Icons -->
 		<script type="text/javascript" th:src="@{/asserts/js/feather.min.js}" ></script>
