@@ -5,6 +5,8 @@ import com.daiju.mp.base.MyBase;
 import com.daiju.pojo.StuInfo;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @Author WDY
  * @Date 2020-11-14 14:40

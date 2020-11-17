@@ -1,5 +1,7 @@
 package com.daiju;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.daiju.mapper.CourseInfoMapper;
 import com.daiju.mapper.CourseScoreMapper;
 import com.daiju.mapper.StuInfoMapper;
@@ -10,10 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.Wrapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import static com.baomidou.mybatisplus.core.toolkit.Wrappers.lambdaQuery;
 
 @SpringBootTest
 class StudentManagementApplicationTests {
@@ -80,6 +85,15 @@ class StudentManagementApplicationTests {
             }).collect(Collectors.toList());
             courseScoreMapper.insertBatchSomeColumn(collect);
         }
+
+    }
+
+    @Test
+    void test11(){
+        Page<StuInfo> stuInfoPage = new Page<>(1, 20);
+        Page<StuInfo> page = stuInfoMapper.selectPage(stuInfoPage, null);
+        List<StuInfo> stuInfoPage1 = page.getRecords();
+        stuInfoPage1.forEach(System.out::println);
 
     }
 

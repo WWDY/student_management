@@ -3,6 +3,7 @@ package com.daiju.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -18,14 +19,15 @@ public class MyWebMVCConfig implements WebMvcConfigurer {
         registry.addViewController("/index").setViewName("index");
         registry.addRedirectViewController("/index.html", "/");
         registry.addRedirectViewController("/index", "/");
-        registry.addViewController("/success").setViewName("success");
-        registry.addViewController("/manage").setViewName("manage");
+        registry.addViewController("/dashboard").setViewName("dashboard");
+        registry.addViewController("/user/userList").setViewName("user-list");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MyWebInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/index","/","/user/login");
+                .excludePathPatterns("/index","/","/user/login","/asserts/**");
     }
+
 }
