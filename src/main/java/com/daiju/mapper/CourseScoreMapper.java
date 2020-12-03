@@ -1,7 +1,7 @@
 package com.daiju.mapper;
 
 import com.daiju.mp.base.MyBase;
-import com.daiju.pojo.CourseScore;
+import com.daiju.pojo.dto.CourseScore;
 import org.springframework.stereotype.Repository;
 
 /**

@@ -1,8 +1,11 @@
 package com.daiju.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.daiju.mp.base.MyBase;
+import com.daiju.pojo.dto.ClassInfo;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @Author WDY
@@ -10,5 +13,7 @@ import org.springframework.stereotype.Repository;
  * @Description TODO
  */
 @Repository
-public interface ClassInfoMapper extends MyBase<pojo.ClassInfo> {
+public interface ClassInfoMapper extends MyBase<ClassInfo> {
+    @Select("SELECT c_name from class_info where left(c_id,2)=#{cId}")
+    List<String> selectClassNameByStartCId(String cId);
 }

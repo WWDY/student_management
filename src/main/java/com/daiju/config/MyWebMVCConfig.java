@@ -3,7 +3,6 @@ package com.daiju.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -21,6 +20,8 @@ public class MyWebMVCConfig implements WebMvcConfigurer {
         registry.addRedirectViewController("/index", "/");
         registry.addViewController("/dashboard").setViewName("dashboard");
         registry.addViewController("/user/userList").setViewName("user-list");
+        registry.addViewController("/user/userEdit").setViewName("user-edit");
+        registry.addViewController("/stu/task").setViewName("stu-upload");
     }
 
     @Override

@@ -1,41 +1,31 @@
-package com.daiju.pojo;
-
-import java.io.Serializable;
+package com.daiju.pojo.dto;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
- * course_info
+ * class_info
  * @author
  */
 @Data
-public class CourseInfo implements Serializable {
+public class ClassInfo implements Serializable {
     /**
-     * 课程号
+     * 班级编号
      */
     @TableId
     private String cId;
 
     /**
-     * 课程名称
+     * 行政班级
      */
     private String cName;
 
     /**
-     * 课程学时
-     */
-    private String cPeriod;
-
-    /**
-     * 课程学分
-     */
-    private Double cScore;
-
-    /**
-     * 逻辑删除
+     * 逻辑删除字段
      */
     @TableField(fill = FieldFill.INSERT)
     private Integer isdel;

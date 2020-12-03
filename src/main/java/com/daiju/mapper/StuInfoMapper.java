@@ -2,10 +2,8 @@ package com.daiju.mapper;
 
 
 import com.daiju.mp.base.MyBase;
-import com.daiju.pojo.StuInfo;
+import com.daiju.pojo.dto.StuInfo;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * @Author WDY

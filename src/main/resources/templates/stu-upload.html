@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>提交作业</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/asserts/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/asserts/css/bootstrap.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/asserts/js/jquery-3.5.1.js}"></script>
+    <script type="text/javascript" th:src="@{/asserts/js/popper.min.js}"></script>
+    <script type="text/javascript" th:src="@{/asserts/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/asserts/js/bootstrap.js}"></script>
+    <!-- Custom styles for this template -->
+</head>
+
+<body>
+<div th:replace="common/bar::navbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <h3><span class="badge badge-secondary">基本信息</span></h3>
+            <div class="card col-md-4" style="display: inline-block;margin-right: 5%">
+                <div class="card-body">
+                    <div class="form-group ">
+                        <label for="stu_id">学号</label>
+                        <input type="text" readonly class="form-control-plaintext" id="stu_id" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="stu_name">姓名</label>
+                        <input type="text" readonly class="form-control-plaintext" id="stu_name" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="card col-md-6" style="display: inline-block;">
+                <div class="card-body">
+                    <div class="form-group col-md-6" style="display: inline-block">
+                        <label for="stu_colleges">所在院校</label>
+                        <input type="text" readonly class="form-control-plaintext" id="stu_colleges" value="">
+                    </div>
+                    <div class="form-group col-md-5" style="display: inline-block">
+                        <label for="stu_class">行政班级</label>
+                        <input type="text" readonly class="form-control-plaintext" id="stu_class" value="">
+                    </div>
+
+                </div>
+            </div>
+            <div>
+                <br>
+            </div>
+            <hr>
+            <h3><span class="badge badge-secondary">课程信息</span></h3>
+        </main>
+    </div>
+</div>
+<script>
+    $.ajax({
+        method:"GET",
+        url:"/stu/getBaseInfo",
+        success:(res)=>{
+            if(res.code===200){
+                $('#stu_id').val(res.stuInfo.sId)
+                $('#stu_name').val(res.stuInfo.sName)
+                $('#stu_colleges').val(res.stuInfo.sColleges)
+                $('#stu_class').val(res.stuInfo.sClass)
+                res.courseInfo.forEach((courseInfos,index)=>{
+                    var template = "<div class='card col-md-4 border border-success' style='display: inline-block;margin: 0 5% 5% 0;'>"+
+                        "<div class='card-header'>"+courseInfos.cname+"</div>"+
+                        "<div class='card-body'>"+
+                        "<div class='custom-file'>"+
+                        "<input type='file' id='customFile"+index+"'>"+
+                        "</div>"+
+                        "<div class='form-group col-md-6'><br>"+
+                        "<button type='submit' courseName='"+courseInfos.cname+"' index='"+index+"' sName='"+res.stuInfo.sName+"' sId="+res.stuInfo.sId+" class='btn btn-secondary col-md-10' onclick='submitWork(this)'>上传作业</button>"+
+                        "</div>"+
+                        "</div>"+
+                        "</div>"
+                    $('main').append(template)
+                })
+            }else{
+                alert("获取信息失败，请重试！")
+            }
+        },
+        error:(error)=>{
+            alert("获取信息失败，请重试！")
+        }
+    })
+
+    function submitWork(_this){
+        const sId = $(_this).attr('sid')
+        const sName = $(_this).attr('sname')
+        const courseName = $(_this).attr('coursename')
+        const index = $(_this).attr('index')
+        const tag = "#customFile"+index;
+        var form = new FormData()
+        form.append("file",$(tag)[0].files[0])
+        form.append("sId",sId)
+        form.append("sName",sName)
+        form.append("courseName",courseName)
+        form.forEach(res=>console.log(res))
+        $.ajax({
+            method: "POST",
+            url:"/stu/task/submit",
+            data:form,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success:res=>{
+                if(res.code === 200){
+                    alert("上传成功！")
+                }else{
+                    alert("上传失败！")
+                }
+            },
+            error:error=>{
+                alert("上传失败！")
+            }
+        })
+    }
+</script>
+
+</body>
+
+</html>

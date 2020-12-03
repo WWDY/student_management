@@ -1,24 +1,25 @@
 package com.daiju;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.daiju.mapper.ClassInfoMapper;
 import com.daiju.mapper.CourseInfoMapper;
 import com.daiju.mapper.CourseScoreMapper;
 import com.daiju.mapper.StuInfoMapper;
-import com.daiju.pojo.CourseInfo;
-import com.daiju.pojo.CourseScore;
-import com.daiju.pojo.StuInfo;
+import com.daiju.pojo.dto.ClassInfo;
+import com.daiju.pojo.dto.CourseInfo;
+import com.daiju.pojo.dto.CourseScore;
+import com.daiju.pojo.dto.StuInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.Wrapper;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-
-import static com.baomidou.mybatisplus.core.toolkit.Wrappers.lambdaQuery;
 
 @SpringBootTest
 class StudentManagementApplicationTests {
@@ -32,6 +33,11 @@ class StudentManagementApplicationTests {
 
     @Autowired
     CourseScoreMapper courseScoreMapper;
+
+    @Autowired
+    ClassInfoMapper classInfoMapper;
+
+
 
     @Test
     void contextLoads() {
@@ -75,8 +81,8 @@ class StudentManagementApplicationTests {
             int finalI = i;
             List<CourseScore> collect = stuInfos.stream().map(x -> {
                 CourseScore courseScore = new CourseScore();
-                courseScore.setSId(x.getSId());
-                courseScore.setSName(x.getSName());
+                courseScore.setStuId(x.getSId());
+//                courseScore.setSName(x.getSName());
                 courseScore.setCName(courseInfos.get(finalI).getCName());
                 courseScore.setDalyScore(Double.valueOf(String.format("%.2f",random.nextDouble()*41+50)));
                 courseScore.setTestScore(Double.valueOf(String.format("%.2f",random.nextDouble()*51+50)));
@@ -95,6 +101,22 @@ class StudentManagementApplicationTests {
         List<StuInfo> stuInfoPage1 = page.getRecords();
         stuInfoPage1.forEach(System.out::println);
 
+    }
+
+    @Test
+    void test112(){
+        List<ClassInfo> classInfos = classInfoMapper.selectList(null);
+        List<String> classNames = classInfos.stream().map(ClassInfo::getCName).collect(Collectors.toList());
+
+        classNames.forEach(System.out::println);
+
+    }
+
+    @Test
+    void test113(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss S");
+        Date date = new Date();
+        System.out.println(dateFormat.format(date));
     }
 
 }

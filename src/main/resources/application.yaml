@@ -21,6 +21,11 @@ spring:
 
   thymeleaf:
     cache: false
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
 
 server:
   port: 8000
@@ -35,4 +40,5 @@ mybatis-plus:
       logic-not-delete-value: 0
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 

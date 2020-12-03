@@ -1,4 +1,4 @@
-package com.daiju.pojo;
+package com.daiju.pojo.dto;
 
 import java.io.Serializable;
 

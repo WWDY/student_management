@@ -1,6 +1,7 @@
 package com.daiju.mapper;
 
 import com.daiju.mp.base.MyBase;
+import com.daiju.pojo.dto.CourseInfo;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,5 +10,5 @@ import org.springframework.stereotype.Repository;
  * @Description TODO
  */
 @Repository
-public interface CourseInfoMapper extends MyBase<com.daiju.pojo.CourseInfo> {
+public interface CourseInfoMapper extends MyBase<CourseInfo> {
 }

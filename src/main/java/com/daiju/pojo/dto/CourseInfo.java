@@ -1,27 +1,27 @@
-package com.daiju.pojo;
-
-import java.io.Serializable;
+package com.daiju.pojo.dto;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 /**
- * course_score
+ * course_info
  * @author
  */
 @Data
-public class CourseScore implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+public class CourseInfo implements Serializable {
     /**
-     * 学号
+     * 课程号
      */
-    private String sId;
-
-    /**
-     * 姓名
-     */
-    private String sName;
+    @TableId
+    private String cId;
 
     /**
      * 课程名称
@@ -29,19 +29,14 @@ public class CourseScore implements Serializable {
     private String cName;
 
     /**
-     * 平时成绩
+     * 课程学时
      */
-    private Double dalyScore;
+    private String cPeriod;
 
     /**
-     * 期末成绩
+     * 课程学分
      */
-    private Double testScore;
-
-    /**
-     * 总成绩
-     */
-    private Double finalScore;
+    private Double cScore;
 
     /**
      * 逻辑删除

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>管理面板</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/asserts/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/asserts/css/bootstrap.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/asserts/js/jquery-3.5.1.js}"></script>
+    <script type="text/javascript" th:src="@{/asserts/js/popper.min.js}"></script>
+    <script type="text/javascript" th:src="@{/asserts/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/asserts/js/bootstrap.js}"></script>
+    <!-- Custom styles for this template -->
+    <link th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
+</head>
+
+<body>
+<div th:replace="common/bar::nav"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div th:replace="common/bar::siderbar(activeUrl='class')"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <h3><span class="badge badge-secondary">基本信息</span></h3>
+            <div class="card col-md-4" style="display: inline-block;margin-right: 5%">
+                <div class="card-body">
+                        <div class="form-group ">
+                            <label for="stu_id">班级编号</label>
+                            <input type="text" readonly class="form-control-plaintext" id="stu_id" th:value="${classInfo.CId}">
+                        </div>
+                        <div class="form-group">
+                            <label for="stu_name">班级名称</label>
+                            <input type="text" readonly class="form-control-plaintext" id="stu_name" th:value="${classInfo.CName}">
+                        </div>
+                </div>
+            </div>
+            <div class="card col-md-6" style="display: inline-block;">
+                <div class="card-body">
+                    <div class="form-group col-md-6" style="display: inline-block">
+                        <label for="stu_colleges">所在院校</label>
+                        <input type="text" readonly class="form-control-plaintext" id="stu_colleges" th:value="软件学院">
+                    </div>
+                    <div class="form-group col-md-5" style="display: inline-block">
+                        <label for="stu_class">班级人数</label>
+                        <input type="text" readonly class="form-control-plaintext" id="stu_class" th:value="${stuCount}">
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <h3><span class="badge badge-secondary">成绩信息</span></h3>
+            <div th:each="score:${compCourseScores}" class="card col-md-4 border border-success" style="display: inline-block;margin: 0 5% 5% 0;">
+                <div class="card-header" th:text="${score.courseName}">
+                    课程名称
+                </div>
+                <div class="card-body" th:attr="c_name=${score.courseName}">
+                    <div class="form-group col-md-5" style="display: inline-block;">
+                        <label for="stu_dalyScore">平时成绩总分</label>
+                        <input type="text" readonly class="form-control-plaintext" id="stu_dalyScore" th:value="${score.finalDalyScore}">
+                    </div>
+                    <div class="form-group col-md-5" style="display: inline-block;">
+                        <label for="avg_stu_dalyScore">平时成绩平均分</label>
+                        <input type="text" readonly class="form-control-plaintext" id="avg_stu_dalyScore" th:value="${score.avgDalyScore}">
+                    </div>
+                    <div class="form-group col-md-5" style="display: inline-block;">
+                        <label for="stu_testScore">期末成绩总分</label>
+                        <input type="text" readonly class="form-control-plaintext" id="stu_testScore" th:value="${score.finalTestScore}">
+                    </div>
+                    <div class="form-group col-md-5" style="display: inline-block;">
+                        <label for="avg_stu_testScore">期末成绩平均分</label>
+                        <input type="text" readonly class="form-control-plaintext" id="avg_stu_testScore" th:value="${score.avgTestScore}">
+                    </div>
+                    <div class="form-group col-md-5" style="display: inline-block;">
+                        <label for="stu_finalScore">总成绩总分</label>
+                        <input type="text" readonly class="form-control-plaintext" id="stu_finalScore" th:value="${score.finalAllScore}">
+                    </div>
+                    <div class="form-group col-md-5" style="display: inline-block;">
+                        <label for="avg_stu_finalScore">总成绩平均分</label>
+                        <input type="text" readonly class="form-control-plaintext" id="avg_stu_finalScore" th:value="${score.avgAllScore}">
+                    </div>
+                    <div>
+                        <br>
+                        <a th:href="@{/class/exportExcl?c_name=}+${classInfo.CName}+'&s_name='+${score.courseName}">
+                            <button  type="submit" class="btn btn-secondary">导出成绩单</button>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+    </div>
+</div>
+<script>
+
+
+</script>
+
+
+
+</body>
+
+</html>

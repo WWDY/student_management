@@ -16,6 +16,8 @@
 		<form class="form-signin" action="/user/login" method="post">
 			<img class="mb-4" th:src="@{/asserts/img/bootstrap-solid.svg}" alt="" width="72" height="72">
 			<h1 class="h3 mb-3 font-weight-normal">请登录</h1>
+			<span style="color: red" th:if="${msg}!=null" th:text="${msg}"></span>
+			<br/>
 			<label class="sr-only">学号</label>
 			<input type="text" class="form-control" placeholder="学号" name="username">
 			<label class="sr-only">密码</label>
