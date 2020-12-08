@@ -16,5 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Courses {
+    private static final Long serialVersionUID = 1L;
     private List<CourseScore> courseScores;
 }

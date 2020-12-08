@@ -8,11 +8,9 @@ import com.daiju.pojo.dto.LoginInfo;
 import com.daiju.pojo.dto.StuInfo;
 import com.daiju.service.IStuInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -38,6 +36,9 @@ public class StudentController {
     @Autowired
     HomeworkInfoMapper homeworkInfoMapper;
 
+    @Value("${spring.uploadPath}")
+    private String uploadPath;
+
     @GetMapping("/stu/getBaseInfo")
     public Map<String,Object> getBaseInfo(HttpSession session){
         LoginInfo user = (LoginInfo)session.getAttribute("user");
@@ -59,7 +60,7 @@ public class StudentController {
         String[] split = StringUtils.split(originalFilename, ".");
         long timeMillis = System.currentTimeMillis();
         String filename = sId+"-"+sName+"-"+courseName+"-"+timeMillis+"."+split[1];
-        file.transferTo(new File("C:/Users/wdy/Desktop/submit",filename));
+        file.transferTo(new File(uploadPath,filename));
         Map<String, Object> res  = new HashMap<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         HomeworkInfo homeworkInfo = new HomeworkInfo();
@@ -72,4 +73,5 @@ public class StudentController {
         res.put("code",200);
         return res;
     }
+
 }

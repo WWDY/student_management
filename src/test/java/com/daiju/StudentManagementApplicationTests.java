@@ -1,24 +1,31 @@
 package com.daiju;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.daiju.domain.CheckDuplicate;
 import com.daiju.mapper.ClassInfoMapper;
 import com.daiju.mapper.CourseInfoMapper;
 import com.daiju.mapper.CourseScoreMapper;
 import com.daiju.mapper.StuInfoMapper;
-import com.daiju.pojo.dto.ClassInfo;
 import com.daiju.pojo.dto.CourseInfo;
 import com.daiju.pojo.dto.CourseScore;
 import com.daiju.pojo.dto.StuInfo;
+import com.spire.doc.fields.TextRange;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.awt.*;
+import java.io.IOException;
 import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @SpringBootTest
@@ -96,27 +103,243 @@ class StudentManagementApplicationTests {
 
     @Test
     void test11(){
-        Page<StuInfo> stuInfoPage = new Page<>(1, 20);
+        Page<StuInfo> stuInfoPage = new Page<>(1, 10);
         Page<StuInfo> page = stuInfoMapper.selectPage(stuInfoPage, null);
         List<StuInfo> stuInfoPage1 = page.getRecords();
-        stuInfoPage1.forEach(System.out::println);
+        HashSet<StuInfo> stuInfos = new HashSet<>(stuInfoPage1);
+       stuInfos.forEach(x->{
+           x.hashCode();
+       });
+
+
+    }
+
+    @Autowired
+    CheckDuplicate duplicate;
+    @Test
+    void test112() throws IOException {
+       duplicate.setProxy();
+
+    }
+
+
+
+    @Test
+    public Map<String, List<String>> internetSearch(String wd) throws IOException {
+        System.out.println("=======================>"+Thread.currentThread().getName());
+        System.out.println(wd);
+        System.out.println("<=======================");
+        Document document = Jsoup.connect("https://www.baidu.com/s")
+                .data("wd", wd)
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4315.4 Safari/537.36")
+                .get();
+        Elements elementsByClass = document.getElementsByClass("c-abstract");
+        List<String> allContents = new ArrayList<>();
+        List<String> matchContents = new ArrayList<>();
+        elementsByClass.forEach(x->{
+            x.select("span").remove();
+            allContents.add(x.text());
+            matchContents.add(x.select("em").text());
+        });
+        Map<String, List<String>> results = new HashMap<>();
+        results.put("matchContents", matchContents);
+        results.put("allContents", allContents);
+        return results;
+    }
+    @Test
+    List<String> te(){
+        List<String> sub = new ArrayList<>();
+        List<String> res = new ArrayList<>();
+        com.spire.doc.Document document = new com.spire.doc.Document("C:\\Users\\wdy\\Desktop\\123.docx");
+        String[] split = document.getText().split("[\\n\\r\\s\\t]");
+        Iterator<String> iterator = Arrays.stream(split).iterator();
+        for (String s : split) {
+            if (s.length() > 0) {
+                res.add(s.replaceAll("　　| {2}",""));
+            }
+        }
+        for (int i = 1; i < res.size(); i++) {
+            int length = res.get(i).length();
+            int j;
+            if(res.get(i).length()<30){
+                sub.add(res.get(i).substring(0,res.get(i).length()));
+            }else{
+                for (j = 0; j < length-30; j += 30) {
+                    sub.add(res.get(i).substring(j,j+30));
+                }
+                if((res.get(i).substring(j,length)).length() < 9){
+                    sub.remove(sub.size()-1);
+                    sub.add(res.get(i).substring(j-30,length));
+                }else{
+                    sub.add(res.get(i).substring(j,length));
+                }
+            }
+
+        }
+        sub.forEach(System.out::println);
+        return sub;
+    }
+
+    @Test
+    void teser(List<String> te,com.spire.doc.Document document) throws IOException {
+        //List<String> te = te();
+        //com.spire.doc.Document document = new com.spire.doc.Document("C:\\Users\\wdy\\Desktop\\123.docx");
+        int i ;
+        for (i = 0; i < te.size(); i++) {
+            Map<String, List<String>> tese = internetSearch(te.get(i));
+            List<String> matchContents = tese.get("matchContents");
+            List<String> allContents = tese.get("allContents");
+            for (int l=0;l<matchContents.size();l++) {
+                if (matchContents.get(l).replaceAll("[\\pP\\p{Punct}]", "").length() >= 13) {
+                    String allContent = allContents.get(l).replace("...","");
+                    System.out.println(allContent);
+                    int length = allContent.length();
+                    int flag = length % 30 == 0 ? length / 30 : length / 30 + 1;
+                    if(i+1+flag==te.size()){
+                        flag++;
+                    } else if (i + flag > te.size()) {
+                        flag = te.size() - i;
+                    }
+                    for (int j = i; j < flag + i; j++) {
+                        System.out.println("------------------------>"+Thread.currentThread().getName());
+                        System.out.println(te.get(j));
+                        System.out.println("<------------------------");
+                        TextRange[] ranges = document.findString(te.get(j), true, false).getRanges();
+                        for (TextRange se : ranges) {
+                            se.getCharacterFormat().setTextColor(Color.RED);
+                        }
+
+                    }
+                    if(i+1+flag>te.size()){
+                        break;
+                    }
+                    i+=flag-1;
+                    break;
+                }
+            }
+
+        }
+    }
+    @Test
+    void divideSentences(){
+        List<String> sub = new ArrayList<>();
+        List<String> res = new ArrayList<>();
+        com.spire.doc.Document document = new com.spire.doc.Document("C:\\Users\\wdy\\Desktop\\123.docx");
+        String[] split = document.getText().split("[\\n\\r\\s\\t]");
+        long timeMillis = System.currentTimeMillis();
+        Iterator<String> iterator = Arrays.stream(split).iterator();
+        for (String s : split) {
+            if (s.length() > 0) {
+                res.add(s.replaceAll("　　| {2}",""));
+            }
+        }
+        for (int i = 1; i < res.size(); i++) {
+            int length = res.get(i).length();
+            int j;
+            if(res.get(i).length()<30){
+                sub.add(res.get(i).substring(0,res.get(i).length()));
+            }else{
+                for (j = 0; j < length-30; j += 30) {
+                    sub.add(res.get(i).substring(j,j+30));
+                }
+                if((res.get(i).substring(j,length)).length() < 9){
+                    sub.remove(sub.size()-1);
+                    sub.add(res.get(i).substring(j-30,length));
+                }else{
+                    sub.add(res.get(i).substring(j,length));
+                }
+            }
+
+        }
+        System.out.println(System.currentTimeMillis()-timeMillis);
+    }
+
+    @Test
+    void testSub() throws InterruptedException, ExecutionException {
+        AtomicInteger index = new AtomicInteger();
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()/2);
+        com.spire.doc.Document document = new com.spire.doc.Document("C:\\Users\\wdy\\Desktop\\123.docx");
+        String[] split = document.getText().split("[\\n\\r\\s\\t]");
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        for (int i = 1; i < split.length; i++) {
+            int finalI = i;
+            if (split[finalI].length() > 0) {
+                CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+                    List<String> sub = new ArrayList<>();
+                    split[finalI].replaceAll("　　| {2}", "");
+                    System.out.println(split[finalI]);
+                    int length = split[finalI].length();
+                    int j;
+                    if (split[finalI].length() < 30) {
+                        sub.add(split[finalI].substring(0, split[finalI].length()));
+                    } else {
+                        for (j = 0; j < length - 30; j += 30) {
+                            sub.add(split[finalI].substring(j, j + 30));
+                        }
+                        if ((split[finalI].substring(j, length)).length() < 9) {
+                            sub.remove(sub.size() - 1);
+                            sub.add(split[finalI].substring(j - 30, length));
+                        } else {
+                            sub.add(split[finalI].substring(j, length));
+                        }
+                    }
+                    return sub;
+                }, executor).
+                        thenAcceptAsync((list) -> {
+                            try {
+                                teser(list, document);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }, executor).
+                        whenCompleteAsync((res,e)->{
+                            index.getAndIncrement();
+                            if(index.get() == futures.size()){
+                                document.saveToFile("C:\\Users\\wdy\\Desktop\\123456.docx");
+                                System.out.println(index.get());
+                                System.out.println("保存！！！！！！！！！");
+                            }
+
+                        });
+                futures.add(future);
+            }
+
+
+        }
+//        while (true) {
+//            System.out.println(index.get()+"=========="+split.length);
+//            if (index.get() == split.length - 1) {
+//                document.saveToFile("C:\\Users\\wdy\\Desktop\\123456.docx");
+//                break;
+//            }
+//        }
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Test
-    void test112(){
-        List<ClassInfo> classInfos = classInfoMapper.selectList(null);
-        List<String> classNames = classInfos.stream().map(ClassInfo::getCName).collect(Collectors.toList());
-
-        classNames.forEach(System.out::println);
-
+    void ssss(){
+        CompletableFuture.runAsync(()->{
+            System.out.println("111111");
+        }).thenRunAsync(()->{
+            System.out.println("2222222222");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).whenCompleteAsync((res,e)->{
+            System.out.println("333333333333");
+            System.out.println(res);
+        });
+        try {
+            System.in.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-    @Test
-    void test113(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss S");
-        Date date = new Date();
-        System.out.println(dateFormat.format(date));
-    }
-
 }

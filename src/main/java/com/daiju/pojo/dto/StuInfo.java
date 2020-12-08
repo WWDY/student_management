@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * stu_info
@@ -56,6 +57,24 @@ public class StuInfo implements Serializable {
      */
     @TableField(fill = FieldFill.INSERT)
     private Integer isdel;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof StuInfo) {
+            StuInfo stuInfo = (StuInfo) o;
+            System.out.println(stuInfo);
+            return this.sId.equals(stuInfo.sId);
+        }
+        else{
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        System.out.println(Objects.hash(sId));
+        return Objects.hash(sId);
+    }
 
     private static final long serialVersionUID = 1L;
 }

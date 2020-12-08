@@ -22,6 +22,8 @@ public class MyWebMVCConfig implements WebMvcConfigurer {
         registry.addViewController("/user/userList").setViewName("user-list");
         registry.addViewController("/user/userEdit").setViewName("user-edit");
         registry.addViewController("/stu/task").setViewName("stu-upload");
+        registry.addViewController("/work").setViewName("work-list");
+        registry.addViewController("/check").setViewName("checkDuplicate");
     }
 
     @Override

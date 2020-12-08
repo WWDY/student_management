@@ -18,6 +18,10 @@ spring:
     filters: stat,wall
     logSlowSql: true
 
+  checkResultPath: C:/Users/wdy/Desktop/submit/result/
+  uploadPath: C:/Users/wdy/Desktop/submit/
+  proxyUrl: http://piping.mogumiao.com/proxy/api/get_ip_bs?appKey=e9d00484240d4d2c9a3f6d2029aadab9&count=1&expiryDate=0&format=1&newLine=2
+
 
   thymeleaf:
     cache: false
@@ -40,5 +44,6 @@ mybatis-plus:
       logic-not-delete-value: 0
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 
 

@@ -18,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Stu_Score implements Serializable {
+    private static final Long serialVersionUID = 1L;
     private StuInfo stuInfo;
     private List<CourseScore> courseScores;
 }

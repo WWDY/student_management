@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompCourseScore {
+    private static final Long serialVersionUID = 1L;
     private String courseName;
     private Double finalDalyScore;
     private Double finalTestScore;

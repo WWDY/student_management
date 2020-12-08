@@ -33,7 +33,7 @@ public class IStuInfoServiceImpl implements IStuInfoService {
     }
 
     @Override
-    @CachePut(cacheNames = {"stuInfo"},key = "#stuInfo.sId")
+    @CachePut(cacheNames = {"stuInfo"},key = "#stuInfo.SId")
     public void updateStu(StuInfo stuInfo) {
         stuInfoMapper.updateById(stuInfo);
     }
