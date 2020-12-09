@@ -44,12 +44,12 @@ public class CheckDuplicate {
      * @return
      * @throws IOException
      */
-    public  Map<String, List<String>> internetSearch(String wd,int flagProxy) throws IOException {
+    public  Map<String, List<String>> internetSearch(String wd) throws IOException {
         System.out.println("=======================>"+Thread.currentThread().getName());
         System.out.println(wd);
         System.out.println("<=======================");
         Proxy proxy = null;
-        if(flagProxy==1){
+        if(proxyMap.size() > 0){
             proxy = new Proxy(Type.HTTP, new InetSocketAddress(proxyMap.get("ip"),Integer.parseInt(proxyMap.get("port")) ));
         }
         Document document = Jsoup.connect("https://www.baidu.com/s")
@@ -80,11 +80,11 @@ public class CheckDuplicate {
     public void checkSearch(List<String> searchWorld,com.spire.doc.Document document) throws IOException {
         int i ;
         for (i = 0; i < searchWorld.size(); i++) {
-            Map<String, List<String>> searchResult = internetSearch(searchWorld.get(i),0);
+            Map<String, List<String>> searchResult = internetSearch(searchWorld.get(i));
             while(searchResult.get("matchContents").size()==0){
                 proxyMap.clear();
                 this.setProxy();
-                searchResult = internetSearch(searchWorld.get(i),1);
+                searchResult = internetSearch(searchWorld.get(i));
             }
             List<String> matchContents = searchResult.get("matchContents");
             List<String> allContents = searchResult.get("allContents");

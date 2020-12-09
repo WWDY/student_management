@@ -51,14 +51,14 @@ public class ChaChoneServiceImpl implements ChaChoneService {
                     List<String> res = checkDuplicate.divideSentences(paragraphs[finalI]);
                     return res;
                 }, executor).
-                        thenAccept((res) -> {
+                        thenAcceptAsync((res) -> {
                             try {
                                 checkDuplicate.checkSearch(res,document);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                        }).
-                        whenComplete((res,e)->{
+                        },executor).
+                        whenCompleteAsync((res,e)->{
                             index.incrementAndGet();
                             if (index.get() == futures.size()) {
                                 long timeMillis = System.currentTimeMillis();
@@ -67,7 +67,7 @@ public class ChaChoneServiceImpl implements ChaChoneService {
                                 fileName.set(checkResultPath+timeMillis+file.getOriginalFilename());
                             }
 
-                        });
+                        },executor);
                 futures.add(future);
             }
         }
