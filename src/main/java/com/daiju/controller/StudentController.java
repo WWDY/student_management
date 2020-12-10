@@ -38,7 +38,6 @@ public class StudentController {
 
     @Value("${spring.uploadPath}")
     private String uploadPath;
-
     @GetMapping("/stu/getBaseInfo")
     public Map<String,Object> getBaseInfo(HttpSession session){
         LoginInfo user = (LoginInfo)session.getAttribute("user");

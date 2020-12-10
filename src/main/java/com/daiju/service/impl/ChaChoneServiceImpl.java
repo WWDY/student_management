@@ -30,7 +30,7 @@ public class ChaChoneServiceImpl implements ChaChoneService {
     @Autowired
     CheckDuplicate checkDuplicate;
 
-    private static int nThreads = Runtime.getRuntime().availableProcessors() / 2;
+    private static int nThreads = Runtime.getRuntime().availableProcessors();
 
     ThreadFactory checkDuplicateFactory = new CustomizableThreadFactory("checkDuplicateThread-pool-");
 

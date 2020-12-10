@@ -63,6 +63,15 @@ public class ClassController {
         return "class-list";
     }
     @Author
+    @ResponseBody
+    @PostMapping("/class/getClassListJson")
+    public Map<String, Object> getClassListJson(){
+        List<ClassInfo> allClassInfo = classInfoService.findAllClassInfo();
+        Map<String, Object> res = new HashMap<>();
+        res.put("data",allClassInfo);
+        return res;
+    }
+    @Author
     @RequestMapping("/class/edit/getOne/{cId}")
     public String getOne(@PathVariable("cId")String cId,Model model){
         //班级信息
