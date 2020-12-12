@@ -168,4 +168,15 @@ public class ClassController {
         result.put("code", 200);
         return result;
     }
+
+
+    @GetMapping("/score/jsonList")
+    @ResponseBody
+    public Map<String, Object> getScoreList(){
+        Map<String, Object> result = new HashMap<>();
+        List<CourseInfo> courseInfos = courseInfoMapper.selectList(null);
+        result.put("code",200);
+        result.put("data",courseInfos);
+        return result;
+    }
 }

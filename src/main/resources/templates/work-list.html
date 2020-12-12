@@ -20,7 +20,7 @@
 </head>
 
 <body>
-<div th:replace="common/bar::nav"></div>
+<div th:replace="common/bar::navbar"></div>
 
 <div class="container-fluid">
     <div class="row">
@@ -29,8 +29,12 @@
             <h2 style="display: inline-block" class="form-group col-md-4">作业信息</h2>
             <div class="form-group row col-md-6" style="display: inline-block">
                 <div class="col-sm-10">
-                    <select class="form-control col-sm-5" id="stu_class" style="display: inline-block" onchange="selectClass(this.value)">
-                        <option>筛选班级</option>
+                    <select class="form-control col-sm-5" id="stu_class" style="display: inline-block" onchange="displayByClass(this.value)">
+                        <option value="-1">筛选班级</option>
+                        <option value="0">全部</option>
+                    </select>
+                    <select class="form-control col-sm-5" id="stu_score" style="display: inline-block" onchange="displayByScore(this.value)">
+                        <option value="-1">筛选科目</option>
                         <option value="0">全部</option>
                     </select>
                 </div>
@@ -48,7 +52,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="work:${workInfo}" th:attr="value=${work.stuId}">
+                    <tr th:each="work:${workInfo}" th:attr="value=${work.stuId},clazzname=${work.stuClass},coursename=${work.stuCourseName}" class="homeList">
                         <td th:text="${work.stuId}"></td>
                         <td th:text="${work.stuName}"></td>
                         <td th:text="${work.stuClass}"></td>
@@ -68,17 +72,71 @@
 </div>
 <script>
 
+
     fetch('/class/getClassListJson',{
         method:'POST'
     }).then(res=>res.json()).then(res=>{
-            res.data.forEach(classInso=>{
-                var template = "<option value="+classInso.cname+">"+classInso.cname+"</option>"
+            res.data.forEach(classInfo=>{
+                let template = "<option value="+classInfo.cname+">"+classInfo.cname+"</option>"
                 $('#stu_class').append(template)
             })
     }).catch(error=>{
         console.log(error)
         alert("获取信息失败，请刷新页面重新获取")
     })
+
+    fetch('/score/jsonList',{
+        method:'GET'
+    }).then(res=>res.json()).then(res=>{
+        res.data.forEach(scoreInfo=>{
+            let template = "<option value="+scoreInfo.cname+">"+scoreInfo.cname+"</option>"
+            $('#stu_score').append(template)
+        })
+    }).catch(error=>{
+        console.log(error)
+        alert("获取信息失败，请刷新页面重新获取")
+    })
+
+   const displayByClass = data=>{
+        let scoreName = $('#stu_score').val();
+        if(scoreName!=0&&scoreName!=-1){
+            if(Number.parseInt(data)===0){
+                $("tbody>tr[coursename="+scoreName+"]").css('display','table-row')
+            }else{
+
+                $("tbody>tr[clazzname="+data+"]"+"[coursename="+scoreName+"]").css('display','table-row')
+                $("tbody>tr[clazzname!="+data+"]"+"[coursename="+scoreName+"]").css('display','none')
+            }
+        }else{
+            if(Number.parseInt(data)===0){
+                $("tbody>tr").css('display','table-row')
+            }else{
+                $("tbody>tr[clazzname="+data+"]").css('display','table-row')
+                $("tbody>tr[clazzname!="+data+"]").css('display','none')
+            }
+        }
+
+   }
+
+
+   const displayByScore = (data)=>{
+       let className = $('#stu_class').val();
+       if(className!=0&&className!=-1){
+           if(Number.parseInt(data)===0){
+               $("tbody>tr[clazzname="+className+"]").css('display','table-row')
+           }else{
+               $("tbody>tr[clazzname="+className+"]"+"[coursename="+data+"]").css('display','table-row')
+               $("tbody>tr[clazzname="+className+"]"+"[coursename!="+data+"]").css('display','none')
+           }
+       }else{
+           if(Number.parseInt(data)===0){
+               $("tbody>tr").css('display','table-row')
+           }else{
+               $("tbody>tr[coursename="+data+"]").css('display','table-row')
+               $("tbody>tr[coursename!="+data+"]").css('display','none')
+           }
+       }
+    }
 
 </script>
 

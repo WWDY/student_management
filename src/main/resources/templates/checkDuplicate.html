@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
 <html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>管理面板</title>
     <!-- Bootstrap core CSS -->
     <link th:href="@{/asserts/css/bootstrap.min.css}" rel="stylesheet">
@@ -18,10 +16,8 @@
     <!-- Custom styles for this template -->
     <link th:href="@{/asserts/css/dashboard.css}" rel="stylesheet">
 </head>
-
 <body>
-<div th:replace="common/bar::nav"></div>
-
+<div th:replace="common/bar::navbar"></div>
 <div class="container-fluid">
     <div class="row">
         <div th:replace="common/bar::siderbar(activeUrl='check')"></div>
@@ -36,14 +32,7 @@
                 </div>
             </div>
         </main>
-
     </div>
 </div>
-<script th:inline="javascript">
-
-</script>
-
-
 </body>
-
 </html>

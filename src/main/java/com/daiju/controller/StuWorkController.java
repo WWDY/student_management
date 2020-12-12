@@ -90,6 +90,7 @@ public class StuWorkController {
 
     }
 
+
     @PostMapping("/checkDuplicate")
     @Author()
     public void checkDuplicate(@RequestParam("file")MultipartFile file,HttpServletResponse response) throws Exception {
