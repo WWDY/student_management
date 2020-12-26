@@ -128,7 +128,6 @@ public class ClassController {
     @GetMapping("/echars/getClassAndCourseJson")
     public Map<String,Object> getClassAndCourseJson(){
         List<CourseInfo> courseInfos = courseInfoMapper.selectList(null);
-        List<ClassInfo> allClassInfo = classInfoService.findAllClassInfo();
         List<String> courseName = courseInfos.stream().map(CourseInfo::getCName).collect(Collectors.toList());
         Map<String, List<String>> data = new HashMap<>();
         data.put("courseName", courseName);
@@ -151,7 +150,6 @@ public class ClassController {
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
         //所属科目每个班级的各项成绩平均分
         List<Map<String, String>> resScore = sId.stream().map(x -> {
-            int count = x.size();
             List<CourseScore> courseScores = courseScoreMapper.selectList(new QueryWrapper<CourseScore>().eq("c_name", cName).in("s_id", x));
             String delyScore = decimalFormat.format(courseScores.stream().mapToDouble(CourseScore::getDalyScore).average().getAsDouble());
             String testScore = decimalFormat.format(courseScores.stream().mapToDouble(CourseScore::getTestScore).average().getAsDouble());
